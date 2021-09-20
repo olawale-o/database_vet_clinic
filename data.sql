@@ -61,4 +61,16 @@ INSERT INTO species(name) VALUES('Digimon');
 UPDATE animals SET species_id = CASE
 WHEN name LIKE '%mon' THEN 2
 ELSE 1
-END
+END;
+
+-- Modify your inserted animals to include owner information (owner_id):
+-- Sam Smith owns Agumon.
+-- Jennifer Orwell owns Gabumon and Pikachu.
+-- Bob owns Devimon and Plantmon.
+-- Melody Pond owns Charmander, Squirtle, and Blossom.
+-- Dean Winchester owns Angemon and Boarmon.
+UPDATE animals SET owner_id = 1 WHERE name = 'Agumon';
+UPDATE animals SET owner_id = 2 WHERE name = 'Gabumon' OR name = 'Pikachu';
+UPDATE animals SET owner_id = 3 WHERE name = 'Devimon' OR name = 'Plantmon';
+UPDATE animals SET owner_id = 4 WHERE name = 'Charmander' OR name = 'Squirtle' OR name = 'Blossom';
+UPDATE animals SET owner_id = 5 WHERE name = 'Angemon' OR name = 'Boarmon';
