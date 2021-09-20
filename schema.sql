@@ -10,3 +10,4 @@ CREATE TABLE animals (
   neutered BOOLEAN DEFAULT false,
   weight_kg decimal(10,4)
 );
+
