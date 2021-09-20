@@ -80,3 +80,17 @@ CREATE TABLE specializations (
   FOREIGN KEY(vets_id)
   REFERENCES vets(id)
 );
+
+CREATE TABLE visits (
+  id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+  animal_id INT,
+  vets_id INT,
+  data_of_the_visit date,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_animals
+  FOREIGN KEY(animal_id)
+  REFERENCES animals(id),
+  CONSTRAINT fk_vets
+  FOREIGN KEY(vets_id)
+  REFERENCES vets(id)
+);
