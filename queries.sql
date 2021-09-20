@@ -101,3 +101,84 @@ UPDATE animals SET weight_kg = (-1 * weight_kg);
 ROLLBACK TO SAVEPOINT ANIMALS_BORN_AFTER_2022_01_01;
 UPDATE animals SET weight_kg = (-1 * weight_kg) WHERE weight_kg < 0;
 COMMIT;
+
+-- Vet clinic database: query multiple tables
+
+-- Write queries (using JOIN) to answer the following questions:
+-- What animals belong to Melody Pond?
+SELECT animals.*, owners.full_name FROM animals INNER JOIN owners ON animals.owner_id = owners.id WHERE owners.full_name = 'Melody Pond';
+-- Ans: Squirtle, Charmander, Blossom
+
+--  id |    name    | date_of_birth | escape_attempts | neutered | weight_kg | species_id | owner_id |  full_name  
+-- ----+------------+---------------+-----------------+----------+-----------+------------+----------+-------------
+--   7 | Squirtle   | 1993-04-02    |               3 | f        |   12.1300 |          1 |        4 | Melody Pond
+--   5 | Charmander | 2020-02-08    |               0 | f        |   11.0000 |          1 |        4 | Melody Pond
+--  10 | Blossom    | 1998-10-13    |               3 | t        |   17.0000 |          1 |        4 | Melody Pond
+
+
+-- List of all animals that are pokemon (their type is Pokemon).
+SELECT animals.*, species.name FROM animals INNER JOIN species ON animals.species_id = species.id WHERE species.name = 'Pokemon';
+-- Ans:
+   -- Squirtle
+   -- Charmander
+   -- Blossom
+   -- Pikachu
+--  id |    name    | date_of_birth | escape_attempts | neutered | weight_kg | species_id | owner_id |  name   
+-- ----+------------+---------------+-----------------+----------+-----------+------------+----------+---------
+--   7 | Squirtle   | 1993-04-02    |               3 | f        |   12.1300 |          1 |        4 | Pokemon
+--   5 | Charmander | 2020-02-08    |               0 | f        |   11.0000 |          1 |        4 | Pokemon
+--  10 | Blossom    | 1998-10-13    |               3 | t        |   17.0000 |          1 |        4 | Pokemon
+--   3 | Pikachu    | 2021-01-07    |               1 | f        |   15.0400 |          1 |        2 | Pokemon
+
+-- List all owners and their animals, remember to include those that don't own any animal.
+SELECT owners.full_name, animals.* FROM owners LEFT JOIN animals ON owners.id = animals.owner_id;
+--     full_name    | id |    name    | date_of_birth | escape_attempts | neutered | weight_kg | species_id | owner_id 
+-- -----------------+----+------------+---------------+-----------------+----------+-----------+------------+----------
+--  Sam Smith       |  1 | Agumon     | 2020-02-03    |               0 | t        |   10.2300 |          2 |        1
+--  Jennifer Orwell |  3 | Pikachu    | 2021-01-07    |               1 | f        |   15.0400 |          1 |        2
+--  Jennifer Orwell |  2 | Gabumon    | 2018-11-15    |               2 | t        |    8.0000 |          2 |        2
+--  Bob             |  6 | Plantmon   | 2022-11-15    |               2 | t        |    5.7000 |          2 |        3
+--  Bob             |  4 | Devimon    | 2017-05-12    |               5 | t        |   11.0000 |          2 |        3
+--  Melody Pond     |  7 | Squirtle   | 1993-04-02    |               3 | f        |   12.1300 |          1 |        4
+--  Melody Pond     |  5 | Charmander | 2020-02-08    |               0 | f        |   11.0000 |          1 |        4
+--  Melody Pond     | 10 | Blossom    | 1998-10-13    |               3 | t        |   17.0000 |          1 |        4
+--  Dean Winchester |  8 | Angemon    | 2005-06-12    |               1 | t        |   45.0000 |          2 |        5
+--  Dean Winchester |  9 | Boarmon    | 2005-06-07    |               7 | t        |   20.4000 |          2 |        5
+--  Jodie Whittaker |    |            |               |                 |          |           |            |     
+
+-- How many animals are there per species?
+SELECT COUNT(species_id) AS species, species.name FROM animals
+INNER JOIN species ON animals.species_id = species.id GROUP BY species_id, species.name;
+-- Ans: 6 and 4
+--  species |  name   
+-- ---------+---------
+--        6 | Digimon
+--        4 | Pokemon
+
+-- List all Digimon owned by Jennifer Orwell.
+SELECT animals.*, species.name, owners.full_name
+FROM animals INNER JOIN species ON animals.species_id = species.id
+INNER JOIN owners ON animals.owner_id = owners.id
+WHERE species.name = 'Digimon' AND owner.full_name = 'Jennifer Orwell';
+-- Ans: Gabumon
+--  id |  name   | date_of_birth | escape_attempts | neutered | weight_kg | species_id | owner_id |  name   |    full_name    
+-- ----+---------+---------------+-----------------+----------+-----------+------------+----------+---------+-----------------
+--   2 | Gabumon | 2018-11-15    |               2 | t        |    8.0000 |          2 |        2 | Digimon | Jennifer Orwell
+
+-- List all animals owned by Dean Winchester that haven't tried to escape.
+SELECT animals.*, owners.full_name
+FROM animals INNER JOIN owners ON animals.owner_id = owners.id WHERE
+owners.full_name = 'Dean Winchester' AND animals.escape_attempts < 1;
+-- Ans: 0
+-- All animals owned by Dean Wincheste have tried to escape
+--  id | name | date_of_birth | escape_attempts | neutered | weight_kg | species_id | owner_id | full_name 
+-- ----+------+---------------+-----------------+----------+-----------+------------+----------+-----------
+
+-- Who owns the most animals?
+SELECT owners.full_name, COUNT(animals.owner_id) AS no_of_animals FROM animals
+INNER JOIN owners ON animals.owner_id = owners.id
+GROUP BY animals.owner_id, owners.full_name ORDER BY no_of_animals DESC LIMIT 1;
+-- Ans: Melody Pond
+--   full_name  | no_of_animals 
+-- -------------+---------------
+--  Melody Pond |             3
