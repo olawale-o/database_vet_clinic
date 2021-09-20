@@ -25,7 +25,16 @@ ALTER TABLE animals ADD species VARCHAR(100);
 -- age: integer
 
 CREATE TABLE owners (
-  id int UNIQUE GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id INT UNIQUE GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   full_name VARCHAR(100),
   age INT
+);
+
+-- Create a table named species with the following columns:
+-- id: integer (set it as autoincremented PRIMARY KEY)
+-- name: string
+
+CREATE TABLE species (
+  id INT UNIQUE GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(100)
 );
