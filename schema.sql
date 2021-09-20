@@ -67,3 +67,16 @@ CREATE TABLE vets (
   date_of_graduation date,
   PRIMARY KEY(id)
 );
+
+CREATE TABLE specializations (
+  id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+  species_id INT,
+  vets_id INT,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_species
+  FOREIGN KEY(species_id)
+  REFERENCES species(id),
+  CONSTRAINT fk_vets
+  FOREIGN KEY(vets_id)
+  REFERENCES vets(id)
+);
