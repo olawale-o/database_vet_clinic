@@ -48,3 +48,4 @@ CREATE TABLE species (
 ALTER TABLE animals ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;
 ALTER TABLE animals DROP species;
 ALTER TABLE animals ADD COLUMN species_id INT, ADD CONSTRAINT fk_species FOREIGN KEY (species_id) REFERENCES species(id);
+ALTER TABLE animals ADD COLUMN owner_id INT, ADD CONSTRAINT fk_owners FOREIGN KEY (owner_id) REFERENCES owners(id);
