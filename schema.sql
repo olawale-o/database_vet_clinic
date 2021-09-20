@@ -46,3 +46,4 @@ CREATE TABLE species (
 -- Add column owner_id which is a foreign key referencing the owners table
 
 ALTER TABLE animals ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;
+ALTER TABLE animals DROP species;
