@@ -37,7 +37,8 @@ CREATE TABLE owners (
 
 CREATE TABLE species (
   id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
-  name VARCHAR(100)
+  name VARCHAR(100),
+  PRIMARY KEY(id)
 );
 
 -- Modify animals table:
