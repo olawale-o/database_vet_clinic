@@ -38,3 +38,11 @@ CREATE TABLE species (
   id INT UNIQUE GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   name VARCHAR(100)
 );
+
+-- Modify animals table:
+-- Make sure that id is set as autoincremented PRIMARY KEY
+-- Remove column species
+-- Add column species_id which is a foreign key referencing species table
+-- Add column owner_id which is a foreign key referencing the owners table
+
+ALTER TABLE animals ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;
