@@ -1,5 +1,4 @@
 # Database Vet Clinic
-
 > This is a Database for vet Clinic
 
 ## Getting Started
