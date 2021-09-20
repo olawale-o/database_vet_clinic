@@ -4,9 +4,9 @@ CREATE DATABASE vet_clinic;
 
 CREATE TABLE animals (
   id int UNIQUE PRIMARY KEY,
-  name varchar(100),
+  name VARCHAR(100),
   date_of_birth date,
   escape_attempts int,
-  neutered boolean DEFAULT false,
+  neutered BOOLEAN DEFAULT false,
   weight_kg decimal(10,4)
 );
