@@ -87,3 +87,14 @@ INSERT INTO vets(name, age, date_of_graduation) VALUES('Stephanie Mendez', 64, '
 -- Vet Jack Harkness is 38 years old and graduated Jun 8th, 2008.
 INSERT INTO vets(name, age, date_of_graduation) VALUES('Jack Harkness', 38, '2008-06-08');
 COMMIT;
+
+-- Insert the following data for specialties:
+BEGIN;
+-- Vet William Tatcher is specialized in Pokemon.
+INSERT INTO specializations(species_id, vets_id) VALUES(1, 1);
+-- Vet Stephanie Mendez is specialized in Digimon and Pokemon.
+INSERT INTO specializations(species_id, vets_id) VALUES(2, 3);
+INSERT INTO specializations(species_id, vets_id) VALUES(1, 3);
+-- Vet Jack Harkness is specialized in Digimon.
+INSERT INTO specializations(species_id, vets_id) VALUES(2, 4);
+ROLLBACK;
