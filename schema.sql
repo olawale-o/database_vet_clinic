@@ -85,7 +85,7 @@ CREATE TABLE visits (
   id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
   animal_id INT,
   vets_id INT,
-  data_of_the_visit date,
+  date_of_the_visit date,
   PRIMARY KEY(id),
   CONSTRAINT fk_animals
   FOREIGN KEY(animal_id)
