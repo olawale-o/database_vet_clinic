@@ -74,3 +74,16 @@ UPDATE animals SET owner_id = 2 WHERE name = 'Gabumon' OR name = 'Pikachu';
 UPDATE animals SET owner_id = 3 WHERE name = 'Devimon' OR name = 'Plantmon';
 UPDATE animals SET owner_id = 4 WHERE name = 'Charmander' OR name = 'Squirtle' OR name = 'Blossom';
 UPDATE animals SET owner_id = 5 WHERE name = 'Angemon' OR name = 'Boarmon';
+
+-- Vet clinic database: add "join table" for visits
+
+BEGIN;
+-- Vet William Tatcher is 45 years old and graduated Apr 23rd, 2000.
+INSERT INTO vets(name, age, date_of_graduation) VALUES('William Tatcher', 45, '2000-04-23');
+-- Vet Maisy Smith is 26 years old and graduated Jan 17th, 2019.
+INSERT INTO vets(name, age, date_of_graduation) VALUES('Maisy Smith', 26, '2019-01-17');
+-- Vet Stephanie Mendez is 64 years old and graduated May 4th, 1981.
+INSERT INTO vets(name, age, date_of_graduation) VALUES('Stephanie Mendez', 64, '1981-05-04');
+-- Vet Jack Harkness is 38 years old and graduated Jun 8th, 2008.
+INSERT INTO vets(name, age, date_of_graduation) VALUES('Jack Harkness', 38, '2008-06-08');
+COMMIT;
