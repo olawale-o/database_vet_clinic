@@ -51,3 +51,46 @@ ALTER TABLE animals ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;
 ALTER TABLE animals DROP species;
 ALTER TABLE animals ADD COLUMN species_id INT, ADD CONSTRAINT fk_species FOREIGN KEY (species_id) REFERENCES species(id);
 ALTER TABLE animals ADD COLUMN owner_id INT, ADD CONSTRAINT fk_owners FOREIGN KEY (owner_id) REFERENCES owners(id);
+
+-- Vet clinic database: add "join table" for visits
+
+-- Create a table named vets with the following columns:
+-- id: integer (set it as autoincremented PRIMARY KEY)
+-- name: string
+-- age: integer
+-- date_of_graduation: date
+
+CREATE TABLE vets (
+  id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR(100),
+  age INT,
+  date_of_graduation date,
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE specializations (
+  id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+  species_id INT,
+  vets_id INT,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_species
+  FOREIGN KEY(species_id)
+  REFERENCES species(id),
+  CONSTRAINT fk_vets
+  FOREIGN KEY(vets_id)
+  REFERENCES vets(id)
+);
+
+CREATE TABLE visits (
+  id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+  animal_id INT,
+  vets_id INT,
+  date_of_the_visit date,
+  PRIMARY KEY(id),
+  CONSTRAINT fk_animals
+  FOREIGN KEY(animal_id)
+  REFERENCES animals(id),
+  CONSTRAINT fk_vets
+  FOREIGN KEY(vets_id)
+  REFERENCES vets(id)
+);

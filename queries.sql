@@ -7,7 +7,7 @@ SELECT * FROM animals WHERE name LIKE '%mon';
 
 -- List the name of all animals born between 2016 and 2019.
 SELECT id, name, date_of_birth, neutered, escape_attempts, date_of_birth, weight_kg FROM
-  (SELECT *, EXTRACT(YEAR FROM date_of_birth) AS year FROM animals) 
+  (SELECT *, EXTRACT(YEAR FROM date_of_birth) AS year FROM animals)
   AS INNER_TABLE WHERE year BETWEEN 2016 and 2019;
 
 -- List the name of all animals that are neutered and have less than 3 escape attempts.
@@ -182,3 +182,125 @@ GROUP BY animals.owner_id, owners.full_name ORDER BY no_of_animals DESC LIMIT 1;
 --   full_name  | no_of_animals 
 -- -------------+---------------
 --  Melody Pond |             3
+
+
+-- Vet clinic database: add "join table" for visits
+
+-- Write queries to answer the following:
+-- Who was the last animal seen by William Tatcher?
+SELECT visits.*, vets.name, animals.name AS animal FROM vets
+INNER JOIN visits
+ON visits.vets_id = vets.id
+INNER JOIN animals
+ON visits.animal_id = animals.id
+WHERE vets.name = 'William Tatcher' ORDER BY date_of_the_visit DESC
+LIMIT 1;
+-- Ans: Blossom
+--  id | animal_id | vets_id | date_of_the_visit |      name       | animal  
+-- ----+-----------+---------+-------------------+-----------------+---------
+--  20 |        10 |       1 | 2021-01-11        | William Tatcher | Blossom
+
+-- How many different animals did Stephanie Mendez see?
+SELECT COUNT(animals.species_id) FROM animals
+INNER JOIN (SELECT visits.*, vets.name FROM visits
+INNER JOIN vets
+ON visits.vets_id = vets.id
+INNER JOIN animals
+ON visits.animal_id = animals.id
+WHERE vets.name = 'Stephanie Mendez') AS INNER_TABLE
+ON animals.id  = INNER_TABLE.animal_id;
+-- Ans: 4
+--  count 
+-- -------
+--      4
+
+-- List all vets and their specialties, including vets with no specialties.
+SELECT vets.name, specializations.species_id, specializations.vets_id,
+species.name AS species FROM vets
+LEFT JOIN specializations
+ON vets.id = specializations.vets_id
+LEFT JOIN species
+ON specializations.species_id = species.id;
+-- Ans:
+--        name       | species_id | vets_id | species 
+-- ------------------+------------+---------+---------
+--  William Tatcher  |          1 |       1 | Pokemon
+--  Stephanie Mendez |          2 |       3 | Digimon
+--  Stephanie Mendez |          1 |       3 | Pokemon
+--  Jack Harkness    |          2 |       4 | Digimon
+--  Maisy Smith      |            |         | 
+
+-- List all animals that visited Stephanie Mendez between April 1st and August 30th, 2020.
+SELECT visits.date_of_the_visit, animals.name AS animal, vets.name AS vet FROM visits
+INNER JOIN animals
+ON visits.animal_id = animals.id
+INNER JOIN vets
+ON visits.vets_id = vets.id
+WHERE vets.name = 'Stephanie Mendez' AND visits.date_of_the_visit BETWEEN '2020-04-01' AND '2020-08-30';
+-- Ans: Agumon and Blossom
+
+--  date_of_the_visit | animal  |       vet        
+-- -------------------+---------+------------------
+--  2020-07-22        | Agumon  | Stephanie Mendez
+--  2020-05-24        | Blossom | Stephanie Mendez
+
+-- What animal has the most visits to vets?
+SELECT COUNT(visits.animal_id) as no_of_visits, animals.name AS animal FROM
+visits 
+INNER JOIN animals
+ON visits.animal_id = animals.id
+GROUP BY animals.name ORDER BY no_of_visits DESC LIMIT 1;
+-- Ans: Boarmon
+--  no_of_visits |  animal   
+-- --------------+---------
+--   4 | Boarmon
+
+-- Who was Maisy Smith's first visit?
+SELECT visits.*, vets.name, animals.name AS animal FROM vets
+INNER JOIN visits
+ON visits.vets_id = vets.id
+INNER JOIN animals
+ON visits.animal_id = animals.id
+WHERE vets.name = 'Maisy Smith' ORDER BY visits.date_of_the_visit
+LIMIT 1;
+-- Ans Boarmon:
+--  id | animal_id | vets_id | date_of_the_visit |    name     | animal  
+-- ----+-----------+---------+-------------------+-------------+---------
+--  15 |         9 |       2 | 2019-01-24        | Maisy Smith | Boarmon
+
+-- Details for most recent visit: animal information, vet information, and date of visit.
+SELECT visits.date_of_the_visit, vets.*, animals.* AS animal FROM vets
+INNER JOIN visits
+ON visits.vets_id = vets.id
+INNER JOIN animals
+ON visits.animal_id = animals.id
+ORDER BY visits.date_of_the_visit DESC LIMIT 1;
+-- Ans:
+--  date_of_the_visit | id |       name       | age | date_of_graduation | id |  name   | date_of_birth | escape_attempts | neutered | weight_kg | species_id | owner_id 
+-- -------------------+----+------------------+-----+--------------------+----+---------+---------------+-----------------+----------+-----------+------------+----------
+--  2021-05-04        |  3 | Stephanie Mendez |  64 | 1981-05-04         |  4 | Devimon | 2017-05-12    |               5 | t        |   11.0000 |          2 |        3
+
+-- How many visits were with a vet that did not specialize in that animal's species?
+SELECT COUNT(visits.animal_id) FROM visits
+INNER JOIN vets ON vets.id = visits.vets_id
+INNER JOIN animals ON animals.id = visits.animal_id
+INNER JOIN specializations ON specializationS.vets_id = vets.id
+WHERE specializations.species_id != animals.species_id;
+-- Ans:
+--  count 
+-- -------
+--      7
+
+-- What specialty should Maisy Smith consider getting? Look for the species she gets the most.
+--Ans: Maisy Smith should consider getting Digimon specialist
+SELECT  COUNT(animals.species_id), species.name AS species FROM vets
+INNER JOIN visits
+ON visits.vets_id = vets.id
+INNER JOIN animals
+ON visits.animal_id = animals.id
+INNER JOIN species
+ON animals.species_id = species.id
+WHERE vets.name = 'Maisy Smith' GROUP BY species.name LIMIT 1;
+--  count | species 
+-- -------+---------
+--      6 | Digimon
