@@ -41,3 +41,19 @@ PRIMARY KEY(id)
 ); 
 
 CREATE INDEX idx_invoices_medical_history_id ON invoices(medical_history_id); 
+
+CREATE TABLE invoice_items (
+id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+unit_price DECIMAL(10, 2),
+quantity INT,
+total_price DECIMAL(10, 2),
+invoice_id INT,
+treatment_id INT, 
+CONSTRAINT fk_invoices
+FOREIGN KEY(invoice_id)
+REFERENCES invoices(id),
+CONSTRAINT fk_treatments
+FOREIGN KEY(treatment_id)
+REFERENCES treatments(id),
+PRIMARY KEY(id)
+); 
