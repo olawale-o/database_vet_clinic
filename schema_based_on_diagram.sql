@@ -56,7 +56,10 @@ CREATE TABLE invoice_items (
   FOREIGN KEY(treatment_id)
   REFERENCES treatments(id),
   PRIMARY KEY(id)
-); 
+);
+
+CREATE INDEX idx_invoice_items_invoice_id ON invoice_items(invoice_id ASC);
+CREATE INDEX idx_invoice_items_treatment_id ON invoice_items(treatment_id ASC);
 
 CREATE TABLE medical_history_treatment (
   medical_history_id INT,
