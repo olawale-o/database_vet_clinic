@@ -27,3 +27,17 @@ type VARCHAR(100),
 name VARCHAR(100),
 PRIMARY KEY(id)
 ); 
+
+CREATE TABLE invoices (
+id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+total_amount DECIMAL(10, 2),
+generated_at TIMESTAMP,
+payed_at TIMESTAMP,
+medical_history_id INT,
+CONSTRAINT fk_medical_histories
+FOREIGN KEY(medical_history_id)
+REFERENCES medical_histories(id),
+PRIMARY KEY(id)
+); 
+
+CREATE INDEX idx_invoices_medical_history_id ON invoices(medical_history_id); 
