@@ -20,3 +20,10 @@ CREATE TABLE medical_histories (
 );
 
 CREATE INDEX idx_medical_histories_patent_id ON medical_histories(patient_id);
+
+CREATE TABLE treatments (
+id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+type VARCHAR(100),
+name VARCHAR(100),
+PRIMARY KEY(id)
+); 
