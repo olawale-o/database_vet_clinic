@@ -94,3 +94,8 @@ CREATE TABLE visits (
   FOREIGN KEY(vets_id)
   REFERENCES vets(id)
 );
+
+-- Vet clinic database: database performance audit
+
+-- Add an email column to your owners table
+ALTER TABLE owners ADD COLUMN email VARCHAR(120);
