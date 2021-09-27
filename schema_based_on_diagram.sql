@@ -18,3 +18,5 @@ CREATE TABLE medical_histories (
   REFERENCES patients(id),
   PRIMARY KEY(id)
 );
+
+CREATE INDEX idx_medical_histories_patent_id ON medical_histories(patient_id);
