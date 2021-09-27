@@ -1,6 +1,7 @@
 # Database Vet Clinic
 > This is a Database for vet Clinic
 
+![screenshot](https://github.com/olawale-o/database_vet_clinic/blob/schema-diagram/vet_clinic.png?raw=true")
 ## Getting Started
 
 This repository includes files with plain SQL that can be used to recreate a database:
@@ -30,6 +31,7 @@ Give a ⭐️ if you like this project!
 
 ## Acknowledgments
 - Microverse
+- dbdiagram.io
 ## 📝 License
 
 This project is [MIT](./MIT.md) licensed.
