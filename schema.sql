@@ -107,3 +107,10 @@ CREATE INDEX idx_owners_email ON owners (email);
 
 -- Create a database based on a diagram
 CREATE DATABASE clinic;
+
+CREATE TABLE patients (
+  id INT UNIQUE GENERATED ALWAYS AS IDENTITY,
+  name VARCHAR(100),
+  date_of_birth DATE,
+  PRIMARY KEY (id)
+);
